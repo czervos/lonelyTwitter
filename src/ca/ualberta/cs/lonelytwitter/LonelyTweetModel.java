@@ -2,7 +2,7 @@ package ca.ualberta.cs.lonelytwitter; // package keyword puts this class in this
 
 import java.util.Date;
 
-public class LonelyTweetModel 
+public abstract class LonelyTweetModel 
 /* public access modifier - public (see anywhere), default (no actual key word, can see anywhere in package) 
  * protected (see in current class & subclasses), private (only see in current class)
  */
@@ -39,11 +39,7 @@ public class LonelyTweetModel
 		this.text = text; // this is a keyword that refers to the current object here text refers to the argument string text, this.text refers to private string text above on line 10
 	}
 	
-	public Date getTimestamp()
-	{
-	
-		return timestamp;
-	}
+	public abstract Date getTimestamp();
 	
 	public void setTimestamp(Date timestamp)
 	{
