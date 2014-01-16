@@ -16,6 +16,7 @@ public class LonelyTweetModel
 		super();
 		this.text = text;
 		timestamp = new Date(); // refers to the class attribute timestamp (here since there is only one timestamp, the this. is implied); new creates a new instance of the object; this is calling the default date constructor
+		
 	}
 
 	public LonelyTweetModel(String text, Date timestamp) // constructors have same name as the class
