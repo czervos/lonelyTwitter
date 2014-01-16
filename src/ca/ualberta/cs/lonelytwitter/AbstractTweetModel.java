@@ -2,15 +2,12 @@ package ca.ualberta.cs.lonelytwitter; // package keyword puts this class in this
 
 import java.util.Date;
 
-public abstract class LonelyTweetModel 
-/* public access modifier - public (see anywhere), default (no actual key word, can see anywhere in package) 
- * protected (see in current class & subclasses), private (only see in current class)
- */
+public abstract class AbstractTweetModel
 {
 	private String text;
 	protected Date timestamp; // referring to java.util.Date
 	
-	public LonelyTweetModel(String text) // also a constructor, it will choose which to use based on the type used, or in this case, how many arguments you provide
+	public AbstractTweetModel(String text) // also a constructor, it will choose which to use based on the type used, or in this case, how many arguments you provide
 	{
 
 		super();
@@ -22,7 +19,7 @@ public abstract class LonelyTweetModel
 		
 	}
 
-	public LonelyTweetModel(String text, Date timestamp) // constructors have same name as the class
+	public AbstractTweetModel(String text, Date timestamp) // constructors have same name as the class
 	{
 
 		super(); // refers to the parent (super) class 
