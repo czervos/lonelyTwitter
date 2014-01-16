@@ -22,13 +22,18 @@ public class ImportantTweetModel extends LonelyTweetModel // based on lonely twe
 	public String getText() {
 		return "Important! " + super.getText();
 	}
+	
+	@Override
+	public boolean isImportant() {
+		return true;
+	}
 
 	@Override // tells java to check to see if there is a getTimestamp mentioned in the superclass
 	public Date getTimestamp()
 	{
 
 		// TODO Auto-generated method stub
-		return null;
+		return super.timestamp;
 	}
 	
 	
