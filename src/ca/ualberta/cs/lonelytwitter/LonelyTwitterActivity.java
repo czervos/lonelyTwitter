@@ -23,6 +23,9 @@ public class LonelyTwitterActivity extends Activity {
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
+	private TweetController controller = new TweetController();
+	private ArrayAdapter<String> adapter;
+	private ArrayList<String> tweets = new ArrayList<String>();
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -30,7 +33,7 @@ public class LonelyTwitterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		bodyText = (EditText) findViewById(R.id.body);
+		bodyText = (EditText) findViewById(R.id.body); /// findViewById(R.id.body) referencing body widget
 		Button saveButton = (Button) findViewById(R.id.save);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 
@@ -40,8 +43,10 @@ public class LonelyTwitterActivity extends Activity {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
 				saveInFile(text, new Date(System.currentTimeMillis()));
-				finish();
-
+				controller.addTweet(text);
+				tweets.add(text);
+				adapter.notifyDataSetChanged();
+				
 			}
 		});
 	}
@@ -49,14 +54,21 @@ public class LonelyTwitterActivity extends Activity {
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
-		super.onStart();
-		String[] tweets = loadFromFile();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		super.onStart(); // subclassing androids activity class so easier to use super instead of writing everything out
+		String[] temp = loadFromFile();
+		for(int i=0; i < temp.length; i++)
+		{
+			tweets.add(temp[i]);
+			
+		}
+		adapter = new ArrayAdapter<String>(this, // adapters adapt basic java data structures (like an array) to connect with a GUI element;
+																		// notifyDataSetChanged() tells the GUI that something changed and it needs to be updated
 				R.layout.list_item, tweets);
 		oldTweetsList.setAdapter(adapter);
+		
 	}
 
-	private String[] loadFromFile() {
+	protected String[] loadFromFile() {
 		ArrayList<String> tweets = new ArrayList<String>();
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
@@ -81,7 +93,7 @@ public class LonelyTwitterActivity extends Activity {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME,
 					Context.MODE_APPEND);
-			fos.write(new String(date.toString() + " | " + text)
+			fos.write(new String(date.toString() + " | " + text) // opening a file using APPEND
 					.getBytes());
 			fos.close();
 		} catch (FileNotFoundException e) {

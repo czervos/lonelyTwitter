@@ -2,6 +2,8 @@ package ca.ualberta.cs.lonelytwitter;
 
 import java.util.ArrayList;
 
+import android.widget.ArrayAdapter;
+
 public class TweetController implements TweetControllerInterface
 {
 	private TweetListModel tweetListModel;
@@ -10,6 +12,7 @@ public class TweetController implements TweetControllerInterface
 	{
 		ArrayList<AbstractTweetModel> list = tweetListModel.getTweetList();
 		list.add(new NormalTweetModel(text));
+		
 	}
 
 	public TweetController()
@@ -19,4 +22,13 @@ public class TweetController implements TweetControllerInterface
 		tweetListModel = new TweetListModel();
 	}
 
+	
+	public TweetListModel getTweetListModel()
+	{
+	
+		return tweetListModel;
+	}
+	
+	
+	
 }

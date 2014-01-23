@@ -1,0 +1,221 @@
+diff --git a/src/ca/ualberta/cs/lonelytwitter/AbstractTweetModel.java b/src/ca/ualberta/cs/lonelytwitter/AbstractTweetModel.java
+new file mode 100644
+index 0000000..7d26021
+--- /dev/null
++++ b/src/ca/ualberta/cs/lonelytwitter/AbstractTweetModel.java
+@@ -0,0 +1,53 @@
++package ca.ualberta.cs.lonelytwitter; // package keyword puts this class in this package
++
++import java.util.Date;
++
++public abstract class AbstractTweetModel
++{
++	private String text;
++	protected Date timestamp; // referring to java.util.Date
++	
++	public AbstractTweetModel(String text) // also a constructor, it will choose which to use based on the type used, or in this case, how many arguments you provide
++	{
++
++		super();
++		this.text = text;
++		timestamp = new Date(); 
++		/* refers to the class attribute timestamp (here since there is only one timestamp, the this. is implied); 
++		 * new creates a new instance of the object; this is calling the default date constructor
++		 */
++		
++	}
++
++	public AbstractTweetModel(String text, Date timestamp) // constructors have same name as the class
++	{
++
++		super(); // refers to the parent (super) class 
++		this.text = text;
++		this.timestamp = timestamp;
++	}
++
++	public String getText()
++	{
++	
++		return text;
++	}
++	
++	public void setText(String text) throws Exception
++	{
++		if (text.length() > 140) {
++			throw new IllegalArgumentException();
++		}
++		this.text = text; // this is a keyword that refers to the current object here text refers to the argument string text, this.text refers to private string text above on line 10
++	}
++	
++	public abstract Date getTimestamp();
++	
++	public abstract boolean isImportant();
++
++	public void setTimestamp(Date timestamp)
++	{
++	
++		this.timestamp = timestamp;
++	}
++}
+diff --git a/src/ca/ualberta/cs/lonelytwitter/ImportantTweetModel.java b/src/ca/ualberta/cs/lonelytwitter/ImportantTweetModel.java
+new file mode 100644
+index 0000000..8285efe
+--- /dev/null
++++ b/src/ca/ualberta/cs/lonelytwitter/ImportantTweetModel.java
+@@ -0,0 +1,40 @@
++package ca.ualberta.cs.lonelytwitter;
++
++import java.util.Date;
++
++
++public class ImportantTweetModel extends AbstractTweetModel // based on lonely tweet model
++{
++
++	public ImportantTweetModel(String text, Date timestamp)
++	{
++
++		super(text, timestamp);
++		// TODO Auto-generated constructor stub
++	}
++
++	public ImportantTweetModel(String text)
++	{
++
++		super(text);
++		// TODO Auto-generated constructor stub
++	}
++	public String getText() {
++		return "Important! " + super.getText();
++	}
++	
++	@Override
++	public boolean isImportant() {
++		return true;
++	}
++
++	@Override // tells java to check to see if there is a getTimestamp mentioned in the superclass
++	public Date getTimestamp()
++	{
++
++		// TODO Auto-generated method stub
++		return super.timestamp;
++	}
++	
++	
++}
+diff --git a/src/ca/ualberta/cs/lonelytwitter/NormalTweetModel.java b/src/ca/ualberta/cs/lonelytwitter/NormalTweetModel.java
+new file mode 100644
+index 0000000..e61e404
+--- /dev/null
++++ b/src/ca/ualberta/cs/lonelytwitter/NormalTweetModel.java
+@@ -0,0 +1,35 @@
++package ca.ualberta.cs.lonelytwitter;
++
++import java.util.Date;
++
++
++public class NormalTweetModel extends AbstractTweetModel
++{
++
++	public NormalTweetModel(String text, Date timestamp)
++	{
++
++		super(text, timestamp);
++		// TODO Auto-generated constructor stub
++	}
++
++	public NormalTweetModel(String text)
++	{
++
++		super(text);
++		// TODO Auto-generated constructor stub
++	}
++
++	@Override
++	public Date getTimestamp()
++	{
++
++		// TODO Auto-generated method stub
++		return null;
++	}
++
++	@Override
++	public boolean isImportant() {
++		return false;
++	}
++}
+diff --git a/src/ca/ualberta/cs/lonelytwitter/TweetController.java b/src/ca/ualberta/cs/lonelytwitter/TweetController.java
+new file mode 100644
+index 0000000..5c9b7b0
+--- /dev/null
++++ b/src/ca/ualberta/cs/lonelytwitter/TweetController.java
+@@ -0,0 +1,22 @@
++package ca.ualberta.cs.lonelytwitter;
++
++import java.util.ArrayList;
++
++public class TweetController implements TweetControllerInterface
++{
++	private TweetListModel tweetListModel;
++
++	public void addTweet(String text)
++	{
++		ArrayList<AbstractTweetModel> list = tweetListModel.getTweetList();
++		list.add(new NormalTweetModel(text));
++	}
++
++	public TweetController()
++	{
++
++		super();
++		tweetListModel = new TweetListModel();
++	}
++
++}
+diff --git a/src/ca/ualberta/cs/lonelytwitter/TweetControllerInterface.java b/src/ca/ualberta/cs/lonelytwitter/TweetControllerInterface.java
+new file mode 100644
+index 0000000..daf99ac
+--- /dev/null
++++ b/src/ca/ualberta/cs/lonelytwitter/TweetControllerInterface.java
+@@ -0,0 +1,8 @@
++package ca.ualberta.cs.lonelytwitter;
++
++
++public interface TweetControllerInterface
++{
++	public void addTweet(String text);
++	
++}
+diff --git a/src/ca/ualberta/cs/lonelytwitter/TweetListModel.java b/src/ca/ualberta/cs/lonelytwitter/TweetListModel.java
+new file mode 100644
+index 0000000..2e25452
+--- /dev/null
++++ b/src/ca/ualberta/cs/lonelytwitter/TweetListModel.java
+@@ -0,0 +1,27 @@
++package ca.ualberta.cs.lonelytwitter;
++
++import java.util.ArrayList;
++
++public class TweetListModel
++{
++	private static ArrayList<AbstractTweetModel> tweetList;
++
++	
++	public ArrayList<AbstractTweetModel> getTweetList()
++	{
++	
++		return tweetList;
++	}
++
++	
++	public void setTweetList(ArrayList<AbstractTweetModel> tweetList)
++	{
++	
++		TweetListModel.tweetList = tweetList;
++	}
++
++	public TweetListModel() {
++		super();
++		tweetList = new ArrayList<AbstractTweetModel>();
++	}
++}
